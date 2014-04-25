@@ -4,9 +4,12 @@
 
 import numpy as np
 import pandas as pd
+import util
+
 
 EMPTY_BOARD = pd.DataFrame(index=range(1, 9)[::-1], columns=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
 RUN = True
+
 
 def initialize_board(board):
   assert board.shape == (8, 8), 'Yo, what? Your board is: {}'.format(board.shape)
@@ -24,21 +27,27 @@ def initialize_board(board):
   return board
 
 
-def get_color_of_piece_on_square(board, rank, file):
-  return board[file][rank]
-
-
-def get_piece_on_square(board, rank, file):
-  # should have different implementation
-  # need to figure out representation of pieces on board
-  return board[file][rank]
-
-
 def move_piece(board, start, placement):
   # start and placement are both tuples of file and rank
+  # move_piece(game_board, start=('e', 2), placement=('e', 4))
+  # checks that placement is on the board
+  # invokes move method of each piece to check for valid moves
+  if placement[0] != board.columns or placement[1] not in board.index:
+    print 'You are moving off the board Move not made.'
+    return board
+  piece = util.get_piece_on_board(board, start)
+  if piece == empty_piece:
+
+  if piece.check_legal_move(start, placement):
+    util.set_square_to_zero(start)
+    piece.move(board, start, placement)
+  return board
+
+
   starting_piece_color = board[start[0]][start[1]]
   placement_piece_color = board[placement[0]][placement[1]]
-  assert starting_piece_color != 0 and starting_piece_color != placement_piece_color, 'You cannot move there'
+  assert starting_piece_color != 0, 'There is no piece there!'
+  assert starting_piece_color != placement_piece_color, 'You cannot move on top of your own piece'
   board[start[0]][start[1]] = 0
   board[placement[0]][placement[1]] = starting_piece_color
   return board

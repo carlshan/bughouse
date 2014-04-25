@@ -1,1 +1,2 @@
-# An implementation of bughouse to play online, with friends!
+# Bughouse
+An implementation of bughouse to play online, with friends!
