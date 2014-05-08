@@ -42,11 +42,11 @@ class Pawn(ChessPiece):
     if self.color == 'w':
       if placement[1] > start[1]: # moving forward
         if self.taken_two_steps: # no longer two moves
-          if (placement[1] - start[1] == 1):
+          if (placement[1] - start[1] == 1): # doesn't take into account if there's a piece in the way!
             return True
         else:
-          if type(get_piece_on_square(board, (placement[0], placement[1]+1))) != EmptySquare:
-            return False
+          if isinstance(get_piece_on_square(board, (placement[0], placement[1]+1)), EmptySquare):
+            return True
           else:
             self.taken_two_steps = True
             if (placement[1] - start[1] < 3):
@@ -57,8 +57,8 @@ class Pawn(ChessPiece):
            if (start[1] - placement[1] == 1):
             return True
         else:
-          if type(get_piece_on_square(board, (placement[0], placement[1]+1))) != EmptySquare:
-            return False
+          if isinstance(get_piece_on_square(board, (placement[0], placement[1]-1)), EmptySquare):
+            return True
           else:
             self.taken_two_steps = True
             if (start[1] - placement[1] < 3):
@@ -90,14 +90,12 @@ class Rook(ChessPiece):
         for rank in range(start[1]+1, placement[1]): # checking pieces in way
           if get_piece_on_square(board, (start[0], rank)).color != None:
             return False
-          else:
-            return True
+        return True
       else: # moving backwards
         for rank in range(placement[1]+1, start[1]):
           if get_piece_on_square(board, (start[0], rank)).color != None:
             return False
-        else:
-          return True
+        return True
     elif start[1] == placement[1]: # same rank
       if char(ord(start[0])+1) == placement[0]:
         return True
@@ -105,12 +103,10 @@ class Rook(ChessPiece):
         for file in range(ord(start[0]+1, ord(placement[0]))):
           if get_piece_on_square(board, (chr(file), start[1])).color != None:
             return False
-          else:
-            return True
+        return True
       else: # moving towards A file
         for file in range(ord(placement[0]+1, ord(start[0]))):
           if get_piece_on_square(board, (chr(file), start[1])).color != None:
             return False
-          else:
-            return True
+        return True
     return False
