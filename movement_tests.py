@@ -23,6 +23,8 @@ class PawnUnitTests(unittest.TestCase):
 
   def test_can_move_two_squares_once(self):
     e2 = pieces.Pawn(self.board, position=('e', 2), color='w')
+    print e2.board
+    print e2.taken_two_steps
     self.assertTrue(e2.check_legal_move(self.board, e2.current_position, ('e', 4)))
 
 
@@ -69,5 +71,4 @@ class RookUnitTests(unittest.TestCase):
     pawn = pieces.Pawn(board=self.board, position = ('a', 2), color='b')
     self.board['a'][1] = rook
     self.board['a'][2] = pawn
-    print self.board
     self.assertTrue(rook.check_legal_move(rook.board, rook.current_position, pawn.current_position))
