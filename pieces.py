@@ -1,4 +1,18 @@
+import util
 from util import *
+
+class Position(object):
+
+  def __init__(self, board, movement):
+    self.board = board
+    if type(movement) not in (tuple, list):
+      raise TypeError, 'Movements must be passed as tuple or list'
+    if movement[0] not in board.columns or movement[1] not in board.index:
+      raise TypeError, 'Invalid movement'
+    self.file = movement[0]
+    self.rank = movement[1]
+
+
 
 class EmptySquare(object):
 
@@ -12,12 +26,10 @@ class EmptySquare(object):
 class ChessPiece(object):
 
   def move(self, board, start, placement):
-    if self.check_legal_move(board, start, placement):
-      set_square_to_zero(board, start)
-      board[placement[0]][placement[1]] = self
-      self.current_position = placement
-    else:
-      print "Invalid move! Move not made."
+    util.set_square_to_empty(board, start)
+    board[placement.file][placement.rank] = self
+    self.current_position = placement
+
 
 
 class Pawn(ChessPiece):
@@ -110,3 +122,52 @@ class Rook(ChessPiece):
             return False
         return True
     return False
+
+class Knight(ChessPiece):
+
+  def __init__(self, board, position, color):
+    self.board = board
+    self.color = color
+    self.current_position = position
+
+
+  def __repr__(self):
+    return self.color + 'N'
+
+
+class Bishop(ChessPiece):
+
+  def __init__(self, board, position, color):
+    self.board = board
+    self.color = color
+    self.current_position = position
+
+
+  def __repr__(self):
+    return self.color + 'B'
+
+
+class Queen(ChessPiece):
+
+  def __init__(self, board, position, color):
+    self.board = board
+    self.color = color
+    self.current_position = position
+    self.taken_two_steps = False
+
+
+  def __repr__(self):
+    return self.color + 'Q'
+
+
+class King(ChessPiece):
+
+  def __init__(self, board, position, color):
+    self.board = board
+    self.color = color
+    self.current_position = position
+    self.taken_two_steps = False
+
+
+  def __repr__(self):
+    return self.color + 'K'

@@ -1,19 +1,22 @@
+from pieces import Position, EmptySquare
+
 def get_color_of_piece_on_square(board, position):
-  # should have different implementation
-  # need to figure out representation of pieces on board
-  file = position[0]
-  rank = position[1]
+  assert isinstance(position, Position)
+  file = position.file
+  rank = position.rank
   return board[file][rank].color
 
 
 def get_piece_on_square(board, position):
-  # should have different implementation
-  # need to figure out representation of pieces on board
-  file = position[0]
-  rank = position[1]
+  assert isinstance(position, Position)
+  file = position.file
+  rank = position.rank
   return board[file][rank]
 
 
-def set_square_to_zero(board, square_position):
-  board[square_position[0]][square_position[1]] = 0
+def set_square_to_empty(board, position):
+  assert isinstance(position, Position)
+  file = position.file
+  rank = position.rank
+  board[file][rank] = EmptySquare(board)
   return board

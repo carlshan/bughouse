@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 import util
 import pieces
+from pieces import Position
+
 
 EMPTY_BOARD = pd.DataFrame(index=range(1, 9)[::-1], columns=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
 RUN = False
@@ -26,20 +28,12 @@ def initialize_board(board):
 
 
 def move_piece(board, start, placement):
-  # start and placement are both tuples of file and rank
-  # move_piece(game_board, start=('e', 2), placement=('e', 4))
-  # checks that placement is on the board
-  # invokes move method of each piece to check for valid moves
-  if placement[0] != board.columns or placement[1] not in board.index:
-    print 'You are moving off the board Move not made.'
-    return board
-  piece = util.get_piece_on_board(board, start)
+  start_position = Position(board, start)
+  placement_position = Position(board, placement)
+  piece = util.get_piece_on_square(board, start_position)
   if piece.color == None:
     print 'There is no piece there! No move made'
-    return board
-  if piece.check_legal_move(start, placement):
-    util.set_square_to_zero(start)
-    piece.move(board, start, placement)
+  piece.move(board, start_position, placement_position)
   return board
 
 
